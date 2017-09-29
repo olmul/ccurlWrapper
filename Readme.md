@@ -4,4 +4,4 @@ which wraps a function:
 ```
 pow(String trytes, int minWeight, int offset);
 ```
-Error handling is non-existant 
+Error handling is nonexistent 
