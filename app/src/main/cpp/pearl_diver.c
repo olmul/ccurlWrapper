@@ -10,6 +10,19 @@
 #include <sched.h>
 #endif
 
+#include <android/log.h>
+
+
+
+#define LOG_TAG "CCURL"
+#define ALOGE(...) __android_log_print(ANDROID_LOG_ERROR, LOG_TAG, __VA_ARGS__)
+#ifdef DEBUG
+#define ALOGV(...) __android_log_print(ANDROID_LOG_VERBOSE, LOG_TAG, __VA_ARGS__)
+#else
+#define ALOGV(...)
+#endif
+
+
 typedef struct {
   States* states;
   char* trits;
@@ -42,7 +55,7 @@ void pd_search(PearlDiver* ctx, char* const transactionTrits, int length,
     ctx->status = PD_INVALID;
 
 #ifdef DEBUG
-    fprintf(stderr, "E: Invalid arguments.\n");
+    ALOGV( "E: Invalid arguments.\n");
 #endif
     return;
   }
@@ -71,7 +84,7 @@ void pd_search(PearlDiver* ctx, char* const transactionTrits, int length,
   PDThread pdthreads[numberOfThreads];
   thread_count = 0;
 #ifdef DEBUG
-  fprintf(stderr, "I: Starting search threads.\n");
+  ALOGV( "I: Starting search threads. %d", numberOfThreads);
 #endif
   while (thread_count < numberOfThreads) {
 
@@ -96,7 +109,7 @@ void pd_search(PearlDiver* ctx, char* const transactionTrits, int length,
   }
 
 #ifdef DEBUG
-  fprintf(stderr, "I: Found threads. Returning.\n");
+  ALOGV( "I: Found threads. Returning.\n");
 #endif
   return; // ctx->status == PD_INTERRUPTED;
 }

@@ -14,6 +14,19 @@
 #define NUMBER_OF_TRITS_IN_A_TRYTE 3
 #define TRYTE_STRING "9ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
+#include <android/log.h>
+
+
+
+#define LOG_TAG "CCURL"
+#define ALOGE(...) __android_log_print(ANDROID_LOG_ERROR, LOG_TAG, __VA_ARGS__)
+#ifdef DEBUG
+#define ALOGV(...) __android_log_print(ANDROID_LOG_VERBOSE, LOG_TAG, __VA_ARGS__)
+#else
+#define ALOGV(...)
+#endif
+
+
 //#define mytrits[NUMBER_OF_TRITS_IN_A_BYTE]
 // char trits[NUMBER_OF_TRITS_IN_A_BYTE];
 //#define IN_BYTE_TO_TRITS[HASH_LENGTH][]
@@ -133,8 +146,9 @@ char* trytes_from_trits(char* const trits, const int offset, const int size) {
   trytes[length] = '\0';
 
   for (i = 0; i < length; i++) {
-    char j = trits[offset + i * 3] + trits[offset + i * 3 + 1] * 3 +
+    int8_t j = trits[offset + i * 3] + trits[offset + i * 3 + 1] * 3 +
                trits[offset + i * 3 + 2] * 9;
+
     if (j < 0) {
       j += 27;
     }
