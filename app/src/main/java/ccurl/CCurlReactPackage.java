@@ -1,4 +1,4 @@
-package com.rnccurl;
+package ccurl;
 
 import com.facebook.react.ReactPackage;
 import com.facebook.react.bridge.NativeModule;

@@ -1,4 +1,4 @@
-package com.rnccurl;
+package ccurl;
 
 import com.facebook.react.bridge.BaseJavaModule;
 import com.facebook.react.bridge.Promise;

@@ -1,4 +1,4 @@
-package com.rnccurl;
+package ccurl;
 
 /**
  * Created by olmul on 29/9/17.

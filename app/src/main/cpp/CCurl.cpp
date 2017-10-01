@@ -12,16 +12,16 @@ extern "C" {
 }
 
 extern "C" {
-JNIEXPORT void JNICALL Java_com_rnccurl_CCURLLib_init(JNIEnv *env, jobject obj);
+JNIEXPORT void JNICALL Java_ccurl_CCURLLib_init(JNIEnv *env, jobject obj);
 JNIEXPORT jstring JNICALL
-Java_com_rnccurl_CCURLLib_pow(JNIEnv *env, jobject obj, jstring trytes,
+Java_ccurl_CCURLLib_pow(JNIEnv *env, jobject obj, jstring trytes,
                                     jint minWeight, jint offset);
 };
 
 PearlDiver pd;
 
 JNIEXPORT void JNICALL
-Java_com_rnccurl_CCURLLib_init(JNIEnv *env, jobject obj) {
+Java_ccurl_CCURLLib_init(JNIEnv *env, jobject obj) {
 
     init_converter();
 //    init_pearldiver(&pd);
@@ -30,7 +30,7 @@ Java_com_rnccurl_CCURLLib_init(JNIEnv *env, jobject obj) {
 }
 
 JNIEXPORT jstring JNICALL
-Java_com_rnccurl_CCURLLib_pow(JNIEnv *env, jobject obj, jstring trytes,
+Java_ccurl_CCURLLib_pow(JNIEnv *env, jobject obj, jstring trytes,
                                     jint minWeight, jint offset) {
     jstring resret;
 
