@@ -18,6 +18,12 @@ public class RNCCurl extends BaseJavaModule {
     void pow(String msg, int offset, int minWeight, Promise promise) {
         String s = CCURLLib.pow(msg, minWeight, offset);
 
+
+        if(s == null) {
+            promise.reject("BADINPUTORSYSTEM", "Something went wrong, possibly input, possibly this code");
+            return;
+        }
+        
         promise.resolve(s);
 
     }
