@@ -15,7 +15,7 @@ To Add this wrapper to your react-native app:
 - in the build.gradle (Module: app) add to ` defaultConfig` : 
 ```gradle
 ndk {
-            abiFilters 'x86', 'x86_64', 'armeabi', 'armeabi-v7a', 'arm64-v8a'
+            abiFilters 'x86', 'armeabi-v7a'
         }
 externalNativeBuild {
             cmake {
