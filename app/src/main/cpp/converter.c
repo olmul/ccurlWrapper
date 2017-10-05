@@ -14,19 +14,6 @@
 #define NUMBER_OF_TRITS_IN_A_TRYTE 3
 #define TRYTE_STRING "9ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
-#include <android/log.h>
-
-
-
-#define LOG_TAG "CCURL"
-#define ALOGE(...) __android_log_print(ANDROID_LOG_ERROR, LOG_TAG, __VA_ARGS__)
-#ifdef DEBUG
-#define ALOGV(...) __android_log_print(ANDROID_LOG_VERBOSE, LOG_TAG, __VA_ARGS__)
-#else
-#define ALOGV(...)
-#endif
-
-
 //#define mytrits[NUMBER_OF_TRITS_IN_A_BYTE]
 // char trits[NUMBER_OF_TRITS_IN_A_BYTE];
 //#define IN_BYTE_TO_TRITS[HASH_LENGTH][]
@@ -148,7 +135,6 @@ char* trytes_from_trits(char* const trits, const int offset, const int size) {
   for (i = 0; i < length; i++) {
     int8_t j = trits[offset + i * 3] + trits[offset + i * 3 + 1] * 3 +
                trits[offset + i * 3 + 2] * 9;
-
     if (j < 0) {
       j += 27;
     }
@@ -172,42 +158,19 @@ static void increment(char* trits, int size) {
   }
 }
 
+void init_converter (void) __attribute__ ((constructor));
 void init_converter() {
   int i;
-  static char isInitialized = 0;
-
-  if (isInitialized) {
-    return;
-  }
-
   char trits[NUMBER_OF_TRITS_IN_A_BYTE];
   memset(trits, 0, NUMBER_OF_TRITS_IN_A_BYTE * sizeof(char));
   for (i = 0; i < HASH_LENGTH; i++) {
     memcpy(&(BYTE_TO_TRITS_MAPPINGS[i]), trits,
            NUMBER_OF_TRITS_IN_A_BYTE * sizeof(char));
-    // BYTE_TO_TRITS_MAPPINGS[i] = mytrits;/*Arrays.copyOf(trits,
-    // NUMBER_OF_TRITS_IN_A_BYTE);*/
     increment(trits, NUMBER_OF_TRITS_IN_A_BYTE);
   }
   for (i = 0; i < TRYTE_SPACE; i++) {
     memcpy(&(TRYTE_TO_TRITS_MAPPINGS[i]), trits,
            NUMBER_OF_TRITS_IN_A_TRYTE * sizeof(char));
-    // TRYTE_TO_TRITS_MAPPINGS[i] = mytrits; /*Arrays.copyOf(trits,
-    // NUMBER_OF_TRITS_IN_A_TRYTE);*/
     increment(trits, NUMBER_OF_TRITS_IN_A_TRYTE);
   }
-
-  isInitialized = 1;
 }
-
-/*
-   static void increment(char *const trits, const int size) {
-   for (int i = 0; i < size; i++) {
-   if (++trits[i] > Converter.MAX_TRIT_VALUE) {
-   trits[i] = Converter.MIN_TRIT_VALUE;
-   } else {
-   break;
-   }
-   }
-   }
-   */

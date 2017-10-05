@@ -11,6 +11,7 @@
 extern "C" {
     #include "pearl_diver.h"
     #include "converter.h"
+    #include "curl.h"
 }
 
 extern "C" {
@@ -20,7 +21,6 @@ Java_ccurl_CCURLLib_pow(JNIEnv *env, jobject obj, jstring trytes,
                                     jint minWeight, jint offset);
 };
 
-PearlDiver pd;
 
 JNIEXPORT void JNICALL
 Java_ccurl_CCURLLib_init(JNIEnv *env, jobject obj) {
@@ -36,21 +36,51 @@ Java_ccurl_CCURLLib_pow(JNIEnv *env, jobject obj, jstring trytes,
                                     jint minWeight, jint offset) {
     jstring resret;
 
-    init_converter();
-
     const char *trytesc = env->GetStringUTFChars(trytes, 0);
     int len =  strlen(trytesc);
+
+
     ALOGV("input len %d str %s", len, trytesc);
+
+    if(len != TRYTE_LENGTH)
+        return NULL;
+
     char* trits = trits_from_trytes(trytesc, len);
+    char* buf = NULL;
 
-    pd_search(&pd, trits, len * 3, minWeight, 0);
 
-    char * trytesDone = trytes_from_trits(trits, offset, len * 3);
-    ALOGV("done len %d str %s", len, trytesDone);
+    PearlDiver pd;
+
+    curl_t curl;
+    init_curl(&curl);
+    ALOGV("Curl init'ed");
+    absorb(&curl, trits, TRANSACTION_LENGTH - HASH_LENGTH);
+    ALOGV("Curl absorbed");
+
+    memcpy(&curl.state, &trits[TRANSACTION_LENGTH - HASH_LENGTH], HASH_LENGTH * sizeof(char));
+
+    ALOGV("Starting Search");
+
+    pd_search(&pd, &curl, minWeight, -1);
+
 
     env->ReleaseStringUTFChars(trytes, trytesc);
-    resret = env->NewStringUTF((const char*)trytesDone);
-    return resret;
+
+    if (pd.status == PD_FOUND) {
+        memcpy(&trits[TRANSACTION_LENGTH - HASH_LENGTH], &curl.state, HASH_LENGTH * sizeof(char));
+        buf = trytes_from_trits(trits, 0, TRANSACTION_LENGTH);
+
+        env->ReleaseStringUTFChars(trytes, trytesc);
+        resret = env->NewStringUTF((const char*)buf);
+//        ALOGV("done len %d str %s", len, &buf[TRANSACTION_LENGTH - HASH_LENGTH]);
+        return resret;
+    }
+
+
+    ALOGV("ERROR");
+
+    return NULL;
+
 
 
 }
