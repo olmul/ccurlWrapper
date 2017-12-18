@@ -65,7 +65,7 @@ void pd_search(
         ctx->status = PD_INVALID;
 
 #ifdef DEBUG
-        fprintf(stderr, "E: Invalid arguments.\n");
+        ALOGV("E: Invalid arguments.\n");
 #endif
         return;
     }
@@ -94,7 +94,7 @@ void pd_search(
     PDThread pdthreads[numberOfThreads];
     thread_count = 0;
 #ifdef DEBUG
-    fprintf(stderr, "I: Starting search threads.\n");
+    ALOGV("I: Starting search %d threads.\n", numberOfThreads);
 #endif
     while (thread_count < numberOfThreads) {
 
@@ -119,7 +119,7 @@ void pd_search(
     }
 
 #ifdef DEBUG
-    fprintf(stderr, "I: Found threads. Returning.\n");
+    ALOGV("I: Found threads. Returning.\n");
 #endif
     return; // ctx->status == PD_INTERRUPTED;
 }

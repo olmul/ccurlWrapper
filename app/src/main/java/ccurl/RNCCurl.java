@@ -23,7 +23,7 @@ public class RNCCurl extends BaseJavaModule {
             promise.reject("BADINPUTORSYSTEM", "Something went wrong, possibly input, possibly this code");
             return;
         }
-        
+
         promise.resolve(s);
 
     }
